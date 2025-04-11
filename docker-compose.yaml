@@ -35,8 +35,8 @@ services:
   openresty:
     image: openresty/openresty:alpine
     volumes:
-      - ./openresty/conf:/usr/local/openresty/nginx/conf:ro
-      - ./openresty/logs:/usr/local/openresty/nginx/logs
+      - ./.docker/openresty/conf:/usr/local/openresty/nginx/conf:ro
+      - ./.docker/openresty/logs:/usr/local/openresty/nginx/logs
     network_mode: host
     restart: unless-stopped
     depends_on:
