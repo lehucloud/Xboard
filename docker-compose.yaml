@@ -12,9 +12,7 @@ services:
       - docker=true
     command: php artisan octane:start --host=0.0.0.0 --port=7001
     restart: on-failure
-    ports:
-      - 7001:7001
-    networks: host
+    network_mode: host
 
   horizon:
     image: xboard:local
@@ -26,7 +24,7 @@ services:
       - ./plugins:/www/plugins
     restart: on-failure
     command: php artisan horizon
-    networks: host
+    network_mode: host
 
   openresty:
     image: openresty/openresty:alpine
