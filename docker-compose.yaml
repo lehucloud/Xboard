@@ -5,7 +5,7 @@ services:
     image: xboard:local
     volumes:
       - ./.docker/.data/redis/:/data/
-      - ./env:/www/env
+      - ./.env:/www/.env
       - ./.docker/.data/:/www/.data
       - ./storage/theme:/www/storage/theme
       - ./storage/logs:/www/storage/logs
@@ -23,7 +23,7 @@ services:
     image: xboard:local
     volumes:
       - ./.docker/.data/redis/:/data/
-      - ./env:/www/env
+      - ./.env:/www/.env
       - ./.docker/.data/:/www/.data
       - ./storage/logs:/www/storage/logs
       - ./plugins:/www/plugins
