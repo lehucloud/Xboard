@@ -46,7 +46,7 @@ services:
   openresty:
     image: openresty/openresty:alpine
     volumes:
-      - ./.docker/openresty/conf:/usr/local/openresty/nginx/conf:ro
+      - ./.docker/openresty/conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
       - ./.docker/openresty/logs:/usr/local/openresty/nginx/logs
       - ./.docker/openresty/certs:/usr/local/openresty/nginx/certs:ro
     ports:
