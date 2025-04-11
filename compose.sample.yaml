@@ -3,7 +3,7 @@ services:
     image: ghcr.io/cedar2025/xboard:new
     volumes:
       - ./.docker/.data/redis/:/data/
-      - ./:/www/
+      - ./.docker/www/:/www/
     environment:
       - docker=true
     depends_on:
@@ -11,16 +11,18 @@ services:
     network_mode: host
     command: php artisan octane:start --port=7001 --host=0.0.0.0
     restart: always
+
   horizon:
     image: ghcr.io/cedar2025/xboard:new
     volumes:
       - ./.docker/.data/redis/:/data/
-      - ./:/www/
+      - ./.docker/www/:/www/
     restart: always
     network_mode: host
     command: php artisan horizon
     depends_on:
       - redis
+
   redis:
     image: redis:7-alpine
     command: redis-server --unixsocket /data/redis.sock --unixsocketperm 777 --save 900 1 --save 300 10 --save 60 10000
@@ -29,3 +31,13 @@ services:
       - ./.docker/.data/redis:/data
     sysctls:
       net.core.somaxconn: 1024
+
+  openresty:
+    image: openresty/openresty:alpine
+    volumes:
+      - ./.docker/openresty/conf:/usr/local/openresty/nginx/conf:ro
+      - ./.docker/openresty/logs:/usr/local/openresty/nginx/logs
+    network_mode: host
+    restart: unless-stopped
+    depends_on:
+      - web
