@@ -3,7 +3,7 @@ services:
     image: ghcr.io/cedar2025/xboard:new
     volumes:
       - ./.docker/.data/redis/:/data/
-      - ./.docker/www/:/www/
+      - ./:/www/
     environment:
       - docker=true
     depends_on:
@@ -16,7 +16,7 @@ services:
     image: ghcr.io/cedar2025/xboard:new
     volumes:
       - ./.docker/.data/redis/:/data/
-      - ./.docker/www/:/www/
+      - ./:/www/
     restart: always
     network_mode: host
     command: php artisan horizon
