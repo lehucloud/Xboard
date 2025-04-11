@@ -1,0 +1,48 @@
+services:
+  web:
+    image: xboard:local
+    volumes:
+      - ./.docker/.data/redis/:/data/
+      - ./env:/www/env
+      - ./.docker/.data/:/www/.docker/.data
+      - ./storage/theme:/www/storage/theme
+      - ./storage/logs:/www/storage/logs
+      - ./plugins:/www/plugins
+    environment:
+      - docker=true
+    depends_on:
+      - redis
+    network_mode: host
+    command: php artisan octane:start --port=7001 --host=0.0.0.0
+    restart: always
+  horizon:
+    image: xboard:local
+    volumes:
+      - ./.docker/.data/redis/:/data/
+      - ./env:/www/env
+      - ./.docker/.data/:/www/.docker/.data
+      - ./storage/logs:/www/storage/logs
+      - ./plugins:/www/plugins
+    restart: always
+    network_mode: host
+    command: php artisan horizon
+    depends_on:
+      - redis
+  redis:
+    image: redis:7-alpine
+    command: redis-server --unixsocket /data/redis.sock --unixsocketperm 777 --save 900 1 --save 300 10 --save 60 10000
+    restart: unless-stopped
+    volumes:
+      - ./.docker/.data/redis:/data
+    sysctls:
+      net.core.somaxconn: 1024
+
+  openresty:
+    image: openresty/openresty:alpine
+    volumes:
+      - ./.docker/openresty/conf:/usr/local/openresty/nginx/conf:ro
+      - ./.docker/openresty/logs:/usr/local/openresty/nginx/logs
+    network_mode: host
+    restart: unless-stopped
+    depends_on:
+      - web
