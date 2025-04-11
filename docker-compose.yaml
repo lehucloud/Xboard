@@ -13,10 +13,12 @@ services:
       - docker=true
     depends_on:
       - redis
+    # Ports are ignored in host mode, but kept for clarity
     ports:
       - "7001:7001"
     command: php artisan octane:start --port=7001 --host=0.0.0.0
     restart: always
+    network_mode: host
   horizon:
     image: xboard:local
     volumes:
@@ -29,6 +31,7 @@ services:
     depends_on:
       - redis
     command: php artisan horizon
+    network_mode: host
   redis:
     image: redis:7-alpine
     command: redis-server --unixsocket /data/redis.sock --unixsocketperm 777 --save 900 1 --save 300 10 --save 60 10000
@@ -37,18 +40,18 @@ services:
       - ./.docker/.data/redis:/data
     sysctls:
       net.core.somaxconn: 1024
+    network_mode: host
   openresty:
     image: openresty/openresty:alpine
     volumes:
       - ./.docker/openresty/conf:/usr/local/openresty/nginx/conf:ro
       - ./.docker/openresty/logs:/usr/local/openresty/nginx/logs
       - ./.docker/openresty/certs:/usr/local/openresty/nginx/certs:ro
+    # Ports are ignored in host mode, but kept for clarity
     ports:
       - "80:80"
       - "443:443"
     restart: unless-stopped
     depends_on:
       - web
-networks:
-  default:
-    driver: bridge
+    network_mode: host
