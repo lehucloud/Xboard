@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   web:
     image: xboard:local
@@ -12,11 +14,11 @@ services:
       - docker=true
     depends_on:
       - redis
-    ports:
-      - "7001:7001"
     command: php artisan octane:start --port=7001 --host=0.0.0.0
     restart: always
-    network_mode: host
+    networks:
+      - xboard-network
+
   horizon:
     image: xboard:local
     volumes:
@@ -29,14 +31,18 @@ services:
     depends_on:
       - redis
     command: php artisan horizon
-    network_mode: host
+    networks:
+      - xboard-network
+
   redis:
     image: redis:7-alpine
     command: redis-server --unixsocket /data/redis.sock --unixsocketperm 777 --save 900 1 --save 300 10 --save 60 10000
     restart: unless-stopped
     volumes:
       - ./.docker/.data/redis:/data
-    network_mode: host
+    networks:
+      - xboard-network
+
   openresty:
     image: openresty/openresty:alpine
     volumes:
@@ -49,4 +55,9 @@ services:
     restart: unless-stopped
     depends_on:
       - web
-    network_mode: host
+    networks:
+      - xboard-network
+
+networks:
+  xboard-network:
+    driver: bridge
