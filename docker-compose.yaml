@@ -1,11 +1,10 @@
-version: '3.8'
 services:
   web:
     image: xboard:local
     volumes:
       - ./.docker/.data/redis/:/data/
       - ./env:/www/env
-      - ./.docker/.data/:/www/.docker/.data
+      - ./.docker/.data/:/www/.data
       - ./storage/theme:/www/storage/theme
       - ./storage/logs:/www/storage/logs
       - ./plugins:/www/plugins
@@ -13,7 +12,6 @@ services:
       - docker=true
     depends_on:
       - redis
-    # Ports are ignored in host mode, but kept for clarity
     ports:
       - "7001:7001"
     command: php artisan octane:start --port=7001 --host=0.0.0.0
@@ -24,7 +22,7 @@ services:
     volumes:
       - ./.docker/.data/redis/:/data/
       - ./env:/www/env
-      - ./.docker/.data/:/www/.docker/.data
+      - ./.docker/.data/:/www/.data
       - ./storage/logs:/www/storage/logs
       - ./plugins:/www/plugins
     restart: always
@@ -38,8 +36,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./.docker/.data/redis:/data
-    sysctls:
-      net.core.somaxconn: 1024
     network_mode: host
   openresty:
     image: openresty/openresty:alpine
@@ -47,7 +43,6 @@ services:
       - ./.docker/openresty/conf:/usr/local/openresty/nginx/conf:ro
       - ./.docker/openresty/logs:/usr/local/openresty/nginx/logs
       - ./.docker/openresty/certs:/usr/local/openresty/nginx/certs:ro
-    # Ports are ignored in host mode, but kept for clarity
     ports:
       - "80:80"
       - "443:443"
