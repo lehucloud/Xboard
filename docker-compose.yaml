@@ -43,12 +43,12 @@ services:
     networks:
       - xboard-network
 
-  openresty:
-    image: openresty/openresty:alpine
+  nginx:
+    image: nginx:alpine
     volumes:
-      - ./.docker/openresty/conf/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf:ro
-      - ./.docker/openresty/logs:/usr/local/openresty/nginx/logs
-      - ./.docker/openresty/certs:/usr/local/openresty/nginx/certs:ro
+      - ./.docker/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./.docker/nginx/logs:/var/log/nginx
+      - ./.docker/nginx/certs:/etc/nginx/certs:ro
     ports:
       - "80:80"
       - "443:443"
