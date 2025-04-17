@@ -12,8 +12,7 @@ services:
       - docker=true
     command: php artisan octane:start --port=7001 --host=0.0.0.0
     restart: always
-    networks:
-      - 1panel-network
+    network_mode: host
 
   horizon:
     image: xboard:ez
@@ -25,10 +24,5 @@ services:
       - ./plugins:/www/plugins
     restart: always
     command: php artisan horizon
-    networks:
-      - 1panel-network
+    network_mode: host
 
-networks:
-  1panel-network:
-    external: true
-    name: 1panel-network
