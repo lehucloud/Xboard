@@ -181,21 +181,17 @@ class OrderController extends Controller
             return $this->fail([400, __('Request failed, please try again later')]);
 
         $host = $request->getSchemeAndHttpHost();
-        $frontendHost = $request->header('X-Frontend-Host');
-        if ($frontendHost){
-            $host = "https://" . $frontendHost
-        }else{
-            $referer = $request->header('referer');
-            if ($referer) {
-                $refererParts = parse_url($referer);
-                if (isset($refererParts['scheme']) && isset($refererParts['host'])) {
-                    $host = $refererParts['scheme'] . '://' . $refererParts['host'];
-                    if (isset($refererParts['port'])) {
-                        $host .= ':' . $refererParts['port'];
-                    }
+        $referer = $request->header('referer');
+        if ($referer) {
+            $refererParts = parse_url($referer);
+            if (isset($refererParts['scheme']) && isset($refererParts['host'])) {
+                $host = $refererParts['scheme'] . '://' . $refererParts['host'];
+                if (isset($refererParts['port'])) {
+                    $host .= ':' . $refererParts['port'];
                 }
             }
         }
+
         $result = $paymentService->pay([
               'trade_no' => $tradeNo,
               'total_amount' => isset($order->handling_amount) ? ($order->total_amount + $order->handling_amount) : $order->total_amount,
