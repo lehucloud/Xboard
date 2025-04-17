@@ -1,6 +1,6 @@
 services:
   web:
-    image: xboard:local
+    image: ghcr.io/cedar2025/xboard:new
     volumes:
       - ./.docker/.data/redis/:/data/
       - ./:/www/
@@ -12,7 +12,7 @@ services:
     command: php artisan octane:start --port=7001 --host=0.0.0.0
     restart: always
   horizon:
-    image: xboard:local
+    image: ghcr.io/cedar2025/xboard:new
     volumes:
       - ./.docker/.data/redis/:/data/
       - ./:/www/
@@ -29,13 +29,3 @@ services:
       - ./.docker/.data/redis:/data
     sysctls:
       net.core.somaxconn: 1024
-
-  openresty:
-    image: openresty/openresty:alpine
-    volumes:
-      - ./.docker/openresty/conf:/usr/local/openresty/nginx/conf:ro
-      - ./.docker/openresty/logs:/usr/local/openresty/nginx/logs
-    network_mode: host
-    restart: unless-stopped
-    depends_on:
-      - web
