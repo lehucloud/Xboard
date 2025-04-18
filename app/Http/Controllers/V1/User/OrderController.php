@@ -182,10 +182,6 @@ class OrderController extends Controller
 
 
         $host = $request->getSchemeAndHttpHost();
-        $frontendHost = $request->header('X-Frontend-Host');
-        if ($frontendHost) {
-            $host = 'https://' . $frontendHost;
-        }else{
             $referer = $request->header('referer');
             if ($referer) {
                 $refererParts = parse_url($referer);
@@ -196,7 +192,6 @@ class OrderController extends Controller
                     }
                 }
             }
-        }
 
         $result = $paymentService->pay([
               'trade_no' => $tradeNo,
