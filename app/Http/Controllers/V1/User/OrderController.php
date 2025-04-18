@@ -180,14 +180,20 @@ class OrderController extends Controller
         if (!$order->save())
             return $this->fail([400, __('Request failed, please try again later')]);
 
+
         $host = $request->getSchemeAndHttpHost();
-        $referer = $request->header('referer');
-        if ($referer) {
-            $refererParts = parse_url($referer);
-            if (isset($refererParts['scheme']) && isset($refererParts['host'])) {
-                $host = $refererParts['scheme'] . '://' . $refererParts['host'];
-                if (isset($refererParts['port'])) {
-                    $host .= ':' . $refererParts['port'];
+        $frontendHost = $request->header('X-Frontend-Host');
+        if ($frontendHost) {
+            $host = 'https://' . $frontendHost;
+        }else{
+            $referer = $request->header('referer');
+            if ($referer) {
+                $refererParts = parse_url($referer);
+                if (isset($refererParts['scheme']) && isset($refererParts['host'])) {
+                    $host = $refererParts['scheme'] . '://' . $refererParts['host'];
+                    if (isset($refererParts['port'])) {
+                       $host .= ':' . $refererParts['port'];
+                    }
                 }
             }
         }
