@@ -1,0 +1,40 @@
+services:
+  web:
+    image: xboard:ez
+    volumes:
+      - ./.docker/.data/redis/:/data/
+      - ./:/www/
+    environment:
+      - docker=true
+    depends_on:
+      - redis
+    command: php artisan octane:start --port=7001 --host=0.0.0.0
+    restart: always
+    networks:
+      - 1panel-network
+  horizon:
+    image: xboard:ez
+    volumes:
+      - ./.docker/.data/redis/:/data/
+      - ./:/www/
+    restart: always
+    command: php artisan horizon
+    depends_on:
+      - redis
+    networks:
+      - 1panel-network
+  redis:
+    image: redis:7-alpine
+    command: redis-server --unixsocket /data/redis.sock --unixsocketperm 777 --save 900 1 --save 300 10 --save 60 10000
+    restart: unless-stopped
+    volumes:
+      - ./.docker/.data/redis:/data
+    sysctls:
+      net.core.somaxconn: 1024
+    networks:
+      - 1panel-network
+
+networks:
+  1panel-network:
+    external: true
+    name: 1panel-network
