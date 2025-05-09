@@ -46,10 +46,6 @@ class PaymentService
             $notifyUrl = $this->config['notify_domain'] . $parseUrl['path'];
         }
 
-        if (!empty($host)) {
-            $host = rtrim($host, '/');
-        }
-        
         return $this->payment->pay([
             'notify_url' => $notifyUrl,
             'return_url' => $host . '/#/payment?trade_no=' . $order['trade_no'],
