@@ -180,51 +180,24 @@ class OrderController extends Controller
         if (!$order->save())
             return $this->fail([400, __('Request failed, please try again later')]);
 
-        
-        // 获取 referer 信息
-        // 优先使用自定义头中的原始前端 referer
-        $referer = $request->header('X-Original-Referer') ?: $request->headers->get('referer');
-        
-        $host = null;
-        if ($request->header('X-Original-Host')) {
-            $scheme = 'http';
-            if ($request->header('X-Original-Origin')) {
-                $originScheme = parse_url($request->header('X-Original-Origin'), PHP_URL_SCHEME);
-                if ($originScheme) {
-                    $scheme = $originScheme;
-                }
-            }
-            else if ($request->header('X-Original-Referer')) {
-                $refScheme = parse_url($request->header('X-Original-Referer'), PHP_URL_SCHEME);
-                if ($refScheme) {
-                    $scheme = $refScheme;
-                }
-            }
-            else if ($request->isSecure()) {
-                $scheme = 'https';
-            }
-            $host = $scheme . '://' . $request->header('X-Original-Host');
-        } 
-        
-        else if ($referer) {
+        $host = $request->getSchemeAndHttpHost();
+        $referer = $request->header('referer');
+        if ($referer) {
             $refererParts = parse_url($referer);
             if (isset($refererParts['scheme']) && isset($refererParts['host'])) {
                 $host = $refererParts['scheme'] . '://' . $refererParts['host'];
-                if (isset($refererParts['port']) && $refererParts['port'] != 80 && $refererParts['port'] != 443) {
+                if (isset($refererParts['port'])) {
                     $host .= ':' . $refererParts['port'];
                 }
             }
         }
-        if (!$host) {
-            $host = $request->getSchemeAndHttpHost();
-        }
-
         $result = $paymentService->pay([
-              'trade_no' => $tradeNo,
-              'total_amount' => isset($order->handling_amount) ? ($order->total_amount + $order->handling_amount) : $order->total_amount,
-              'user_id' => $order->user_id,
-              'stripe_token' => $request->input('token')
+            'trade_no' => $tradeNo,
+            'total_amount' => isset($order->handling_amount) ? ($order->total_amount + $order->handling_amount) : $order->total_amount,
+            'user_id' => $order->user_id,
+            'stripe_token' => $request->input('token')
         ], $host);
+        
         return response([
             'type' => $result['type'],
             'data' => $result['data']
