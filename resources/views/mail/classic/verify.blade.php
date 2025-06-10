@@ -100,8 +100,8 @@
                         <tr
                             style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;">
                             <td class="alert alert-warning"
-                                style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 22px; font-weight: bold; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #0073ba; margin: 0; padding: 20px;"
-                                align="center" bgcolor="#0073ba" valign="top">
+                                style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 22px; font-weight: bold; vertical-align: top; color: #fff; font-weight: 500; text-align: center; border-radius: 3px 3px 0 0; background-color: #34a853; margin: 0; padding: 20px;"
+                                align="center" bgcolor="#34a853" valign="top">
                                 邮箱验证码
                             </td>
                         </tr>
@@ -117,7 +117,7 @@
                                         <td class="content-block"
                                             style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 34px; vertical-align: top; line-height: 1em; margin: 0; padding: 20px 0 30px;"
                                             valign="top">
-                                            Dear Customer
+                                            亲爱的用户
                                         </td>
                                     </tr>
                                     <tr
@@ -151,7 +151,7 @@
                                             valign="top">
                                             <a href="{{$url}}"
                                                 class="btn-primary"
-                                                style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #fff; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #0073ba; margin: 0; border-color: #0073ba; border-style: solid; border-width: 8px 20px;">登录 {{$name}}</a>
+                                                style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #fff; text-decoration: none; line-height: 2em; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; border-radius: 5px; text-transform: capitalize; background-color: #34a853; margin: 0; border-color: #34a853; border-style: solid; border-width: 8px 20px;">登录 {{$name}}</a>
                                         </td>
                                     </tr>
                                 </table>
